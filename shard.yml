@@ -1,0 +1,20 @@
+name: cpm
+version: 0.1.0
+
+authors:
+  - Sokolvek <99820337+Sokolvek@users.noreply.github.com>
+
+targets:
+  cpm:
+    main: src/cpm.cr
+
+crystal: '>= 1.20.2'
+
+license: MIT
+
+dependencies:
+  blueprint:
+    github: stephannv/blueprint
+  mysql:
+    github: crystal-lang/crystal-mysql
+
