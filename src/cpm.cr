@@ -10,13 +10,21 @@ def handle_install()
   content = File.read("shard.yml").split("\n")
   dependencies = ARGV[1..ARGV.size]
   dependencies.each do |dep|
-    add_dependency(content,dep.split("/")[1], dep)
+    add_dependency(content,dep.split("/")[1], format_str(dep))
   end
   launch_streaming_proccess("shards", ["install"])
 
   return true
 end
 
+def format_str(str : String)
+  if str.starts_with?("https://")
+    str = str.split("/")[3..str.size].join("/")
+  elsif str.starts_with?("github.com") 
+    str = str.split("/")[1..str.size].join("/")
+  end
+  return str
+end
 def launch_streaming_proccess(command, args, output = :pipe)
   Process.run("shards", args: ["install"], output: :pipe) do |process|
     buffer = Bytes.new(1024)
@@ -51,7 +59,6 @@ end
 
 module Cpm
   VERSION = "0.1.0"
-
   ARGV.each_with_index do |arg, index|
     continue = commands_map[arg].call()
     break if !continue
